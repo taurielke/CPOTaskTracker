@@ -51,4 +51,9 @@ public class CategoryData {
             categories.add(category);
         }
     }
+
+    public void deleteAll(){
+        categories.clear();
+        readAll();
+    }
 }
