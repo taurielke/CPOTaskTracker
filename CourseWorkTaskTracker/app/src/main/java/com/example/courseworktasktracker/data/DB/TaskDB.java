@@ -92,10 +92,16 @@ public class TaskDB {
         return taskList;
     }
 
+    public void deleteAll() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete("tasks", null, null);
+        dbHelper.close();
+    }
+
     class DBHelper extends SQLiteOpenHelper {
 
         public DBHelper(Context context) {
-            super(context, "tasksqqq", null, 2);
+            super(context, "tasks", null, 2);
         }
 
         @Override

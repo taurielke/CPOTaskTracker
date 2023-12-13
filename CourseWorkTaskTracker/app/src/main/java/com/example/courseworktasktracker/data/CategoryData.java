@@ -53,7 +53,8 @@ public class CategoryData {
     }
 
     public void deleteAll(){
-        categories.clear();
+        categories.clear(); // Очищаем список категорий в памяти
+        categoriesDB.deleteAll(); // Удаляем все записи в базе данных
         readAll();
     }
 }

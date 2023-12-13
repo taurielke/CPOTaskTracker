@@ -70,6 +70,12 @@ public class TaskData {
         readAll();
     }
 
+    public void deleteAll(){
+        tasks.clear(); // Очищаем список категорий в памяти
+        tasksDB.deleteAll(); // Удаляем все записи в базе данных
+        readAll();
+    }
+
     private void readAll(){
         List<Task> brs = tasksDB.readAll();
         tasks.clear();

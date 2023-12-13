@@ -88,10 +88,16 @@ public class CategoryDB {
         return categoryList;
     }
 
+    public void deleteAll() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete("categories", null, null);
+        dbHelper.close();
+    }
+
     class DBHelper extends SQLiteOpenHelper {
 
         public DBHelper(Context context) {
-            super(context, "categoriesqqq", null, 2);
+            super(context, "categories", null, 2);
         }
 
         @Override
