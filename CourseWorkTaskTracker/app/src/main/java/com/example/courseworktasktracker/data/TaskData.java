@@ -26,18 +26,31 @@ public class TaskData {
         return tasks;
     }
 
-    public void addTask(String name, String deadline){
+    public List<Task> findAllTaskByCategory(int categoryId){
+        readAll();
+        List<Task> tasksByCategoryId = new ArrayList<>();
+        for(Task task : tasks){
+            if(task.getCategoryId() == categoryId){
+                tasksByCategoryId.add(task);
+            }
+        }
+        return tasksByCategoryId;
+    }
+
+    public void addTask(String name, int categoryId){
         Task task = new Task();
         task.setName(name);
-        task.setDeadline(deadline);
+        task.setCategoryId(categoryId);
+        //task.setDeadline(deadline);
         tasksDB.add(task);
         readAll();
     }
-    public void updateTask(int id, String name, String deadline){
+    public void updateTask(int id, String name, int categoryId){
         Task task = new Task();
         task.setId(id);
         task.setName(name);
-        task.setDeadline(deadline);
+        task.setCategoryId(categoryId);
+       // task.setDeadline(deadline);
         tasksDB.update(task);
         readAll();
     }
@@ -47,6 +60,16 @@ public class TaskData {
         tasksDB.delete(task);
         readAll();
     }
+
+    public void deleteAllTaskByCategory(int categoryId){
+        for(Task task : tasks){
+            if(task.getCategoryId() == categoryId){
+                tasksDB.delete(task);
+            }
+        }
+        readAll();
+    }
+
     private void readAll(){
         List<Task> brs = tasksDB.readAll();
         tasks.clear();

@@ -2,8 +2,6 @@ package com.example.courseworktasktracker;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GestureDetectorCompat;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,19 +13,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.example.courseworktasktracker.data.Category;
 import com.example.courseworktasktracker.data.CategoryData;
+import com.example.courseworktasktracker.data.TaskData;
 
 public class MainCategoryActivity extends AppCompatActivity {
 
     CategoryData categoryData;
     ArrayAdapter<Category> adapter;
     ListView listViewCategories;
-    GestureDetectorCompat gestureDetector;
+    TaskData taskData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +33,11 @@ public class MainCategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_category);
 
         categoryData = new CategoryData(this);
+        taskData = new TaskData(this);
 
         Button btnAdd = findViewById(R.id.buttonAdd);
         listViewCategories = findViewById(R.id.listViewCat);
+
 
         adapter = new ArrayAdapter<Category>(this, android.R.layout.simple_list_item_1,
                 categoryData.findAllCategory());
@@ -48,6 +48,21 @@ public class MainCategoryActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(v -> {
             openAddDialog();
             adapter.notifyDataSetChanged();
+        });
+
+        listViewCategories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // Получаем выбранную категорию
+                Category category = (Category) adapterView.getItemAtPosition(position);
+
+                // Создаем Intent для запуска нового Activity
+                Intent intent = new Intent(MainCategoryActivity.this, TasksActivity.class);
+                intent.putExtra("categoryName", category.getName());
+                intent.putExtra("categoryId", category.getId());
+                startActivityForResult(intent, 99);
+                adapter.notifyDataSetChanged();
+            }
         });
 
         listViewCategories.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -82,6 +97,7 @@ public class MainCategoryActivity extends AppCompatActivity {
                 builder.setNegativeButton("Удалить", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        taskData.deleteAllTaskByCategory(selectedItem.getId());
                         // Удалите выбранный элемент из списка
                         categoryData.deleteCategory(selectedItem.getId());
                         adapter.notifyDataSetChanged();
@@ -97,8 +113,6 @@ public class MainCategoryActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
     }
 
     private void openAddDialog() {

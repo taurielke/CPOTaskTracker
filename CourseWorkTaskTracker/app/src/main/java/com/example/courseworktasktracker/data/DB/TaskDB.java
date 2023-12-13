@@ -27,11 +27,11 @@ public class TaskDB {
         if (c.moveToFirst()){
             int idIndex = c.getColumnIndex("id");
             int nameIndex = c.getColumnIndex("name");
-            int deadlineIndex = c.getColumnIndex("deadline");
+            int categoryIdIndex = c.getColumnIndex("categoryId");
             Task tr = new Task();
             tr.setId(c.getInt(idIndex));
             tr.setName(c.getString(nameIndex));
-            tr.setDeadline(c.getString(deadlineIndex));
+            tr.setCategoryId(c.getInt(categoryIdIndex));
             if (tr.getId() == (task.getId())) {
                 dbHelper.close();
                 return tr;
@@ -45,7 +45,7 @@ public class TaskDB {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("name", task.getName());
-        cv.put("deadline", task.getDeadline());
+        cv.put("categoryId", task.getCategoryId());
         long taskId = db.insert("tasks", null, cv);
         dbHelper.close();
     }
@@ -57,7 +57,7 @@ public class TaskDB {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("name", task.getName());
-        cv.put("deadline", task.getDeadline());
+        cv.put("categoryId", task.getCategoryId());
         db.update("tasks", cv, "id = ?", new String[] {String.valueOf(task.getId())});
         dbHelper.close();
     }
@@ -79,12 +79,12 @@ public class TaskDB {
         if (c.moveToFirst()){
             int idIndex = c.getColumnIndex("id");
             int nameIndex = c.getColumnIndex("name");
-            int deadlineIndex = c.getColumnIndex("deadline");
+            int categoryIdIndex = c.getColumnIndex("categoryId");
             do{
                 Task tr = new Task();
                 tr.setId(c.getInt(idIndex));
                 tr.setName(c.getString(nameIndex));
-                tr.setDeadline(c.getString(deadlineIndex));
+                tr.setCategoryId(c.getInt(categoryIdIndex));
                 taskList.add(tr);
             } while(c.moveToNext());
         }
@@ -103,7 +103,7 @@ public class TaskDB {
             db.execSQL("create table tasks ("
                     + "id integer primary key autoincrement,"
                     + "name text,"
-                    + "deadline text" + ");");
+                    + "categoryId integer" + ");");
         }
 
         @Override

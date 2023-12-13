@@ -5,7 +5,7 @@ public class Task {
     private int id;
     private String name;
     private String deadline;
-    private String category;
+    private int categoryId;
 
     public int getId() {
         return id;
@@ -27,9 +27,9 @@ public class Task {
 
     public void setDeadline(String deadline) {this.deadline = deadline;}
 
-    public String getCategory(){return category;}
+    public int getCategoryId(){return categoryId;}
 
-    public void setCategory(String category) {this.category = category;}
+    public void setCategoryId(int categoryId) {this.categoryId = categoryId;}
 
 
     @Override
